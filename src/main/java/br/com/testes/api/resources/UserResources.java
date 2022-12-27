@@ -20,6 +20,7 @@ import br.com.testes.api.domain.User;
 import br.com.testes.api.domain.dto.UserDTO;
 import br.com.testes.api.services.impl.UserServiceImplementacao;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -53,5 +54,11 @@ public class UserResources {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> upadate(@PathVariable Long id,@RequestBody UserDTO obj){
+        obj.setId(id);
+        User newObj = serviceImplementacao.update(obj);
+        return ResponseEntity.ok().body(mapper.map(newObj, UserDTO.class));
+        }
     
 }
