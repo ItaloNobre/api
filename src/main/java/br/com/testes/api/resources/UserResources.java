@@ -10,6 +10,7 @@ import javax.persistence.PostLoad;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,11 +55,17 @@ public class UserResources {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> upadate(@PathVariable Long id,@RequestBody UserDTO obj){
+    public ResponseEntity<UserDTO> update(@PathVariable Long id,@RequestBody UserDTO obj){
         obj.setId(id);
         User newObj = serviceImplementacao.update(obj);
         return ResponseEntity.ok().body(mapper.map(newObj, UserDTO.class));
         }
     
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        serviceImplementacao.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
